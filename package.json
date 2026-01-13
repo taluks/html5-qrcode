@@ -1,6 +1,6 @@
 {
-  "name": "html5-qrcode",
-  "version": "2.3.8",
+  "name": "@taluks/html5-qrcode",
+  "version": "2.3.9",
   "description": "A cross platform HTML5 QR Code & bar code scanner",
   "main": "./cjs/index.js",
   "module": "./esm/index.js",
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mebjas/html5-qrcode.git"
+    "url": "git+https://github.com/taluks/html5-qrcode.git"
   },
   "keywords": [
     "html5",
@@ -50,9 +50,9 @@
   "author": "minhazav@gmail.com",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/mebjas/html5-qrcode/issues"
+    "url": "https://github.com/taluks/html5-qrcode/issues"
   },
-  "homepage": "https://github.com/mebjas/html5-qrcode#readme",
+  "homepage": "https://github.com/taluks/html5-qrcode#readme",
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.11.4",
