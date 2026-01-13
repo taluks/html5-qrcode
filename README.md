@@ -398,9 +398,6 @@ Also, huge thanks to following organizations for non monitery sponsorships
 <div>
 	<a href="https://scanapp.org"><img src="https://scanapp.org/assets/svg/scanapp.svg" height="60px" alt="" /></a>
 </div>
-<div>
-	<a href="https://www.browserstack.com"><img src="https://www.browserstack.com/images/layout/browserstack-logo-600x315.png" height="100px" alt="" /></a>
-</div>
 <!-- sponsors -->
 
 ## Credits
