@@ -740,8 +740,6 @@ export class Html5Qrcode {
 
             inputImage.onerror = reject;
             inputImage.onabort = reject;
-            inputImage.onstalled = reject;
-            inputImage.onsuspend = reject;
             inputImage.src = URL.createObjectURL(imageFile);
         });
     }
