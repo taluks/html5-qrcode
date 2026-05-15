@@ -48,7 +48,7 @@ export class Html5QrcodeShim implements RobustQrcodeDecoderAsync {
             this.primaryDecoder = new BarcodeDetectorDelegate(
                 requestedFormats, verbose, logger);
             // If 'BarcodeDetector' is supported, the library will alternate
-            // between 'BarcodeDetector' and 'zxing-js' to compensate for
+            // between 'BarcodeDetector' and 'zxing-wasm' to compensate for
             // quality gaps between the two.
             this.secondaryDecoder = new ZXingHtml5QrcodeDecoder(
                 requestedFormats, verbose, logger);
