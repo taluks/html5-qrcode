@@ -1,17 +1,4 @@
-const fs = require("fs");
 const path = require("path");
-const webpack = require("webpack");
-
-const wasmPath = path.join(
-    __dirname,
-    "node_modules",
-    "zxing-wasm",
-    "dist",
-    "reader",
-    "zxing_reader.wasm"
-);
-const wasmBase64 = fs.readFileSync(wasmPath).toString("base64");
-const wasmDataUrl = `data:application/wasm;base64,${wasmBase64}`;
 
 module.exports = {
     // bundling mode
@@ -38,11 +25,6 @@ module.exports = {
             },
         ],
     },
-    plugins: [
-        new webpack.DefinePlugin({
-            __ZXING_WASM_INLINE__: JSON.stringify(wasmDataUrl),
-        }),
-    ],
     optimization: {
         minimize: true,
         usedExports: true,

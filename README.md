@@ -12,7 +12,7 @@ npm install @taluks/html5-qrcode
 
 Package on npm: [@taluks/html5-qrcode](https://www.npmjs.com/package/@taluks/html5-qrcode)
 
-When you use the minified bundle from `dist/` or `minified/`, serve `zxing_reader.wasm` next to `html5-qrcode.min.js`. The build script copies the WASM file into those folders automatically.
+By default the ZXing reader WASM is loaded from **jsDelivr CDN** (no extra files required). For offline or self-hosted deployments you can load `zxing_reader.wasm` from the same directory as the script or from a custom URL — see [ZXing WASM loading](#zxing-wasm-loading-zxingwasm). The build copies `zxing_reader.wasm` into `dist/` and `minified/` for local hosting.
 
 ## Highlights
 
@@ -104,11 +104,66 @@ const html5QrcodeScanner = new Html5QrcodeScanner(
 html5QrcodeScanner.render(onScanSuccess);
 ```
 
-Load the library from npm in your bundler, or include the UMD build and WASM file from `minified/`. See [examples/html5](./examples/html5) for a minimal HTML setup.
+Load the library from npm in your bundler, or include the UMD build from `minified/`. See [examples/html5](./examples/html5) for a minimal HTML setup.
 
 ## API configuration
 
 Configuration for `Html5QrcodeScanner` and `Html5Qrcode#start()` controls scanning behaviour and the built-in UI. Most fields have defaults; you can pass `{}` to keep them.
+
+### ZXing WASM loading (`zxingWasm`)
+
+The decoder uses [zxing-wasm](https://github.com/Sec-ant/zxing-wasm) **reader** only (`zxing_reader.wasm`). Three loading modes are supported:
+
+| Mode | Config | When to use |
+| ---- | ------ | ----------- |
+| **CDN** (default) | omit `zxingWasm` or `loadMode: "cdn"` | Simplest setup; requires internet access to jsDelivr |
+| **Same directory** | `loadMode: "sameDirectory"` | Host `zxing_reader.wasm` next to `html5-qrcode.min.js` (file is in `dist/` / `minified/` after build) |
+| **Custom URL** | `loadMode: "custom"` + `wasmUrl` | Your own CDN path or absolute URL |
+
+**CDN (default)** — no extra files:
+
+```html
+<script src="./html5-qrcode.min.js"></script>
+```
+
+**Same directory** — copy both files from `minified/` or `dist/`:
+
+```html
+<script src="./html5-qrcode.min.js"></script>
+```
+
+```js
+const scanner = new Html5QrcodeScanner("reader", {
+  fps: 10,
+  qrbox: { width: 250, height: 250 },
+  zxingWasm: { loadMode: "sameDirectory" },
+}, false);
+scanner.render(onScanSuccess);
+```
+
+**Custom URL**:
+
+```js
+zxingWasm: {
+  loadMode: "custom",
+  wasmUrl: "https://cdn.example.com/assets/zxing_reader.wasm",
+}
+```
+
+**Global default** (before creating any scanner):
+
+```js
+import { configureZxingWasm, ZxingWasmLoadMode } from "@taluks/html5-qrcode";
+
+configureZxingWasm({ loadMode: ZxingWasmLoadMode.SAME_DIRECTORY });
+// or
+configureZxingWasm({
+  loadMode: ZxingWasmLoadMode.CUSTOM,
+  wasmUrl: "/static/zxing_reader.wasm",
+});
+```
+
+Per-instance `zxingWasm` on `Html5Qrcode` / `Html5QrcodeScanner` overrides the global setting.
 
 ### `fps` — number
 
@@ -270,7 +325,7 @@ Some features are experimental and not recommended for production. Details: [exp
 1. Change code only under [`src/`](./src).
 2. `npm install`
 3. `npm run build` — on Windows, `npm run build-windows`
-4. Output: [`dist/html5-qrcode.min.js`](./dist/html5-qrcode.min.js) and `zxing_reader.wasm`
+4. Output: [`dist/html5-qrcode.min.js`](./dist/html5-qrcode.min.js) and [`dist/zxing_reader.wasm`](./dist/zxing_reader.wasm) (for local / offline hosting)
 5. `npm test` before sending a pull request
 
 Do not edit `dist/` or `minified/` by hand in pull requests.

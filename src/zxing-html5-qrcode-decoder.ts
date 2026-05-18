@@ -17,6 +17,7 @@ import {
 } from "zxing-wasm/reader";
 
 import { ensureZxingWasmReady } from "./zxing-wasm-init";
+import { ZxingWasmConfig } from "./zxing-wasm-config";
 
 import {
     QrcodeResult,
@@ -60,12 +61,15 @@ export class ZXingHtml5QrcodeDecoder implements QrcodeDecoderAsync {
 
     private readonly readerOptionsBase: ReaderOptions;
     private readonly logger: Logger;
+    private readonly zxingWasmConfig?: ZxingWasmConfig;
 
     public constructor(
         requestedFormats: Array<Html5QrcodeSupportedFormats>,
         verbose: boolean,
-        logger: Logger) {
+        logger: Logger,
+        zxingWasmConfig?: ZxingWasmConfig) {
         this.logger = logger;
+        this.zxingWasmConfig = zxingWasmConfig;
         const formats = this.buildWasmFormats(requestedFormats);
         this.readerOptionsBase = {
             formats,
@@ -89,7 +93,7 @@ export class ZXingHtml5QrcodeDecoder implements QrcodeDecoderAsync {
             throw new Error("Canvas 2D context is not available.");
         }
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        await ensureZxingWasmReady();
+        await ensureZxingWasmReady(this.zxingWasmConfig);
         const results = await readBarcodes(imageData, this.readerOptionsBase);
         const hit = results.find((r) => r.isValid && r.format !== "None" && r.text);
         if (!hit) {
